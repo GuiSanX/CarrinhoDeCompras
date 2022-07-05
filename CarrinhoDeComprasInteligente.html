@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="IniciarCompras.js"></script>
+</head>
+<body>
+    <h1>Carrinho de Compras Inteligente:</h1>
+    <p>Preencha a área "Nome"com o nome do produto que será adicionado ao carinho e a área "Custo" com o custo do mesmo. </p>
+    <p>Nome do produto:</p>
+    <input type="text" id="nomeProduto" value="">
+    <p id="aviso_nome"></p>
+    <p>Custo do produto:</p>
+    <input type="number" min="0" id="custoProduto" value="">
+    <p id="aviso_custo"></p>
+    <p> <span id="arreyLenght">0</span>/10 vagas no carrinho. Custo total da compra: <span id="custoTotal">0</span></p>
+    <p>Adicione produtos ao carrinho ou encerre suas compars:</p>
+    <button onclick="adicionarProduto_Button()">Adicionar ao carrinho</button>
+    <button onclick="encerrarCompras_Button()">Encerrar compras</button>
+    <button onclick="limparCarrinho_Button()">Limpar carrinho</button>
+    <p id="listaDeProdutos"></p>
+    <p id="pagamentoInfo"></p>
+
+
+    <script> function adicionarProduto_Button(){
+        var nome_ = document.getElementById("nomeProduto").value;
+        var custo_ = document.getElementById("custoProduto").value;
+        if(nome_ == ""){
+            document.getElementById("aviso_nome").innerHTML = "Nome de produto inválido";
+        }
+        else if(custo_ == 0 || custo_ == ""){
+            document.getElementById("aviso_custo").innerHTML = "Custo de produto inválido";
+        }
+        else{
+            adicionarProduto(nome_,custo_);
+        document.getElementById("arreyLenght").innerHTML = listaDeComprasLength();
+        document.getElementById("custoTotal").innerHTML = custoTotalInfo();
+        document.getElementById("nomeProduto").value = "";
+        document.getElementById("custoProduto").value = "";
+        document.getElementById("aviso_nome").innerHTML = "";
+        document.getElementById("aviso_custo").innerHTML = "";
+        document.getElementById("pagamentoInfo").innerHTML = "";
+        }
+        
+    }
+    </script>
+    
+    <script> function encerrarCompras_Button(){
+        let txt = "";
+        let i = 0;
+
+        do{
+            if(listaDeComprasLength()>0)
+            {
+                txt += informarUmProdutoDaLista(i);
+            }            
+            i++;
+        }
+        while(i<listaDeComprasLength())
+        document.getElementById("listaDeProdutos").innerHTML = txt;
+        resultadosFinais();        
+        document.getElementById("aviso_nome").value = "";
+        document.getElementById("aviso_custo").value = "";
+    }
+    </script>
+
+    <script> function resultadosFinais(){
+        let sobra = "";
+        let total = custoTotalInfo();
+        if(total <= 0){
+            document.getElementById("pagamentoInfo").innerHTML = "Não há custo para essa compra";
+        }
+        else{
+         let n100 = Number(Math.floor(total / 100));
+         sobra = Number(total-n100*100);
+         let n50 = Math.floor(sobra/50);
+         sobra = Number(sobra-n50*50);
+         let n20 = Math.floor(sobra/20);
+         sobra = Number(sobra-n20*20);
+         let n10 = Math.floor(sobra/10);
+         sobra = Number(sobra-n10*10);
+         let n05 = Math.floor(sobra/5);
+         sobra = Number(sobra-n05*5);
+         let n02 = Math.floor(sobra/2);
+         sobra = Number(sobra-n02*2);
+         let n01 = Math.ceil(sobra);
+         document.getElementById("pagamentoInfo").innerHTML += "No mínimo serão usados: "
+         if(n100>0){
+            document.getElementById("pagamentoInfo").innerHTML += n100+" notas de 100 reias, "
+         }
+         if(n50>0){
+            document.getElementById("pagamentoInfo").innerHTML += n50+" notas de 50 reias, " 
+         }
+         if(n20>0){
+            document.getElementById("pagamentoInfo").innerHTML += n20+" notas de 20 reias, "
+         }
+         if(n10>0){
+            document.getElementById("pagamentoInfo").innerHTML += n10+" notas de 10 reias, "
+         }
+         if(n05>0){
+            document.getElementById("pagamentoInfo").innerHTML += n05+" notas de 5 reias, "
+         }
+         if(n02>0){
+            document.getElementById("pagamentoInfo").innerHTML += n02+" notas de 2 reias, "
+         }
+         if(n01>0){
+            document.getElementById("pagamentoInfo").innerHTML += n01+" notas de 1 reias."
+         }
+        }         
+    }</script>
+
+    <script>function limparCarrinho_Button(){
+        document.getElementById("pagamentoInfo").innerHTML = "";
+        limparCarrinho();
+        document.getElementById("arreyLenght").innerHTML = listaDeComprasLength();
+        document.getElementById("custoTotal").innerHTML = custoTotalInfo();
+        document.getElementById("listaDeProdutos").innerHTML = "";        
+        document.getElementById("aviso_nome").value = "";
+        document.getElementById("aviso_custo").value = "";
+    }</script>
+      
+</body>
+</html>
